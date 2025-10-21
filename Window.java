@@ -1,42 +1,24 @@
 import javax.swing.*;
-import java.awt.image.BufferedImage;
-
-import java.awt.Color;
 
 public class Window extends JFrame {
-    private int width = 800;
-    private int height = 600;
-    private static BufferedImage img;
-    
-    public Window() {
-        setSize(width, height);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        getContentPane().setBackground(Color.RED);
 
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.BLUE);
+    public Window() {
+        setTitle("Image Display Window");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create a sample BufferedImage (for example purposes)
+        
+        // Fill the image with a color or some graphics
+        
+
+        // Create the ImagePanel with the image
+        PerlinImage img = new PerlinImage();
+        ImagePanel panel = new ImagePanel(img.getImage());
         add(panel);
 
-        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int r = 3;
-                int g = 255;
-                int b = 0;
-                int rgb = (r << 16) | (g << 8) | b;
-                img.setRGB(x, y, rgb);
-            }
-        }
-
-        ImageIcon icon = new ImageIcon(img);
-        JLabel label = new JLabel(icon);
-        panel.add(label);
-
-        
+        pack();  // size the window based on the panel's preferred size
+        setLocationRelativeTo(null); // center the window on screen
+        setVisible(true);
     }
-    public static BufferedImage getImg() {
-            return img;
-        }
-    
+
 }
