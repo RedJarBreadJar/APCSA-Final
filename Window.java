@@ -6,11 +6,6 @@ public class Window extends JFrame {
         setTitle("Image Display Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create a sample BufferedImage (for example purposes)
-        
-        // Fill the image with a color or some graphics
-        
-
         // Create the ImagePanel with the image
         PerlinImage img = new PerlinImage();
         ImagePanel panel = new ImagePanel(img.getImage());
