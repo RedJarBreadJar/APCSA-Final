@@ -7,18 +7,22 @@ public class PerlinImage {
     public PerlinImage(){
         BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 
-        int[][] randPoints = new int[30][40];
+        int[][] randPoints = new int[40][30];
 
-        for(int y = 0; y < randPoints.length; y++){
-            for(int x = 0; x < randPoints[y].length; x++){
-                
+        for (int x = 0; x < randPoints.length; x++)
+        {
+            for (int y = 0; y < randPoints[x].length; y++)
+            {
+
                 int random =(int) (Math.random()*255);
-                randPoints[y][x] = random;
+                randPoints[x][y] = random;
             }
         }
 
-        for (int y = 0; y < image.getHeight(); y++){
-            for(int x = 0; x < image.getWidth(); x++){
+        for (int y = 0; y < image.getHeight(); y++)
+        {
+            for(int x = 0; x < image.getWidth(); x++)
+            {
                 
                 int random =(int) (Math.random()*255);
                 
@@ -28,13 +32,14 @@ public class PerlinImage {
 
                 int rgb = (red << 16) | (green << 8) | blue;
 
-                image.setRGB(x, y, rgb); //for real do img.setRGB(x, y, rgb)
+                image.setRGB(x, y, rgb);
             }
         }
         this.image = image;
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage()
+    {
         return image;
     }
 }

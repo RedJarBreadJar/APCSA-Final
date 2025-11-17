@@ -1,8 +1,10 @@
 import javax.swing.*;
 
-public class Window extends JFrame {
+public class Window extends JFrame
+{
 
-    public Window() {
+    public Window()
+    {
         setTitle("Image Display Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
