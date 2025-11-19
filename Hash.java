@@ -1,23 +1,30 @@
 public class Hash {
     // Simple hash function for demonstration
-    public static int hash(int x, int y) {
-    int h = 0;
+    public static double hash(double x, double y)
+    {
+    long a = Double.doubleToLongBits(x);
+    long b = Double.doubleToLongBits(y);
 
-    // Combine coordinates using a large prime mix
-    h = x * 374761393 + y * 668265263;
+    long h = 0;
 
-    // Bit mixing (similar to MurmurHash finalizer)
-    h ^= (h >>> 13);
-    h *= 1274126177;
-    h ^= (h >>> 16);
+    // Mix like your original, but in 64-bit
+    h = a * 374761393L + b * 668265263L;
+
+    // Bit mixing (64-bit version)
+    h ^= (h >>> 33);
+    h *= 0xff51afd7ed558ccdL;
+    h ^= (h >>> 33);
+    h *= 0xc4ceb9fe1a85ec53L;
+    h ^= (h >>> 33);
 
     // Return 0–255
-    return h & 0xFF;
-}
+    return (int)(h & 0xFF);
+    }
 
-    public static void main(String[] args) {
-        int x = -1;
-        int y = 1;
+    public static void main(String[] args)
+    {
+        double x = -1;
+        double y = 1;
         System.out.println("Hash of ("+x+", "+y+"): " + hash(x, y));
     }
 }
