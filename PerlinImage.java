@@ -19,10 +19,11 @@ public class PerlinImage {
         
         Random rand = new Random(seed);
         for (int i =  perm.size() - 1;  i > 0; i--){
-            int randIndex = rand.nextInt(i + seed);
+            int randIndex = rand.nextInt(i);
             Collections.swap( perm, i, randIndex);
         }
-        for (int i = 0; i < perm.size(); i++){
+        int sizeThing = perm.size();
+        for (int i = 0; i < sizeThing; i++){
             perm.add(perm.get(i));
         }
         return  perm;
@@ -66,9 +67,9 @@ public class PerlinImage {
         final double yf = y - Math.floor(y);
 
         final Vector2D topL = new Vector2D(xf, yf);
-        final Vector2D topR = new Vector2D(xf+1.0, yf);
-        final Vector2D botL = new Vector2D(xf, yf+1.0);
-        final Vector2D botR =  new Vector2D(xf+1.0, yf+1.0);
+        final Vector2D topR = new Vector2D(xf-1.0, yf);
+        final Vector2D botL = new Vector2D(xf, yf-1.0);
+        final Vector2D botR =  new Vector2D(xf-1.0, yf-1.0);
 
         final int valTopL = permutation.get(permutation.get(X)+Y);
         final int valTopR = permutation.get(permutation.get(X+1)+Y);
@@ -94,8 +95,13 @@ public class PerlinImage {
             {
                 double n = Noise2D(x*0.01, y*0.01);
 
+                n = (n + 1.0) * 0.5;
                 int c = (int) Math.round(255*n);
-                image.setRGB(c,c,c);
+
+                c = Math.min(255, Math.max(0,c));
+
+                int rgb = (c << 16) | (c << 8) | c;
+                image.setRGB(x, y, rgb);
             }
         }
         this.image = image;
