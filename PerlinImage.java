@@ -100,8 +100,14 @@ public class PerlinImage {
 
                 c = Math.min(255, Math.max(0,c));
 
-                int rgb = (c << 16) | (c << 8) | c;
+                int rgb;
+                if (c > 120){
+                    rgb = (0 << 16) | (244 << 8) | 20;
+                } else {
+                    rgb = (0 << 16) | (0 << 8) | 240;
+                }
                 image.setRGB(x, y, rgb);
+                
             }
         }
         this.image = image;

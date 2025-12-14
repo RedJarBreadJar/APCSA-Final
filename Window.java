@@ -3,13 +3,13 @@ import javax.swing.*;
 public class Window extends JFrame
 {
 
-    public Window()
+    public Window(int seed)
     {
         setTitle("Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create the ImagePanel with the image
-        PerlinImage img = new PerlinImage(123);
+        PerlinImage img = new PerlinImage(seed);
         ImagePanel panel = new ImagePanel(img.getImage());
         add(panel);
 
