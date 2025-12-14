@@ -5,11 +5,11 @@ public class Window extends JFrame
 
     public Window()
     {
-        setTitle("Image Display Window");
+        setTitle("Window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create the ImagePanel with the image
-        PerlinImage img = new PerlinImage();
+        PerlinImage img = new PerlinImage(123);
         ImagePanel panel = new ImagePanel(img.getImage());
         add(panel);
 

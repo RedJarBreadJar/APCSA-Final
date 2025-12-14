@@ -1,94 +1,106 @@
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.lang.Math;
 
 public class PerlinImage {
     //code for perlin noise function goes in here
     private BufferedImage image;
+    private static ArrayList<Integer> permutation;
 
-    public PerlinImage(){
-        BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+    //Makes an ArrayList
+    public ArrayList<Integer> MakePermutation(int seed){
         
-        final int cellSize = 10;
-        double[] permutation = new double[256];
-        for (int i = 0; i < permutation.length; i++)
-        {
-            permutation[i] = i;
+        ArrayList<Integer>  perm = new ArrayList<Integer>();
+        for (int i = 0; i < 256; i++) {
+             perm.add(i);
+        } //initialize
+        
+        Random rand = new Random(seed);
+        for (int i =  perm.size() - 1;  i > 0; i--){
+            int randIndex = rand.nextInt(i + seed);
+            Collections.swap( perm, i, randIndex);
         }
-        
-
-        this.image = image;
-        // Initialize and declare cell sizes and number of random points
-        // final int cellSize = 10;
-        // final int xCells = image.getWidth()/cellSize;
-        // final int yCells = image.getHeight()/cellSize;
-        // double[][][] randPoints = new double[xCells][yCells][2];
-
-        // // Initialize the vectors at each random point
-        // double r1, r2;
-        // for(int y = 0; y < randPoints.length; y++){
-        //     for(int x = 0; x < randPoints[y].length; x++){
-        //         r1 = (Math.random() + 1) /2;
-        //         r2 = (Math.random() + 1) /2;
-        //         randPoints[y][x] = new double[]{r1, r2};
-        //     }
-        // }
-
-        // // Generate the noise image using bilinear interpolation
-        // double col1, col2, col3, col4, prod1, prod2, prod3, prod4, lerp1, lerp2, lerp3;
-        // int red, green, blue, rgb, X, Y;
-        // double[] topLeft, topRight, bottomLeft, bottomRight, point;
-        // for (int i = 0; i < randPoints.length-1; i++)
-        // {
-        //     for (int j = 0; j < randPoints[i].length-1; j++)
-        //     {
-        //         // Get the vector values in the corners of the cell
-        //         topLeft = randPoints[i][j];
-        //         topRight = randPoints[i+1][j];
-        //         bottomLeft = randPoints[i][j+1];
-        //         bottomRight = randPoints[i+1][j+1];
-
-        //         // Interpolate within the cell
-        //         for (double y = 0; y <= 1; y+=0.5/(double)cellSize)
-        //         {
-        //             for (double x = 0; x <= 1; x+=0.5/(double)cellSize)
-        //             {
-        //                 // X and Y pixel coordinates
-        //                 X = i * cellSize + (int)(x * cellSize);
-        //                 Y = j * cellSize + (int)(y * cellSize);
-        //                 point = new double[]{X, Y};
-
-        //                 // Hash the point coordinates to get pseudo-random gradients
-        //                 // col1 = Hash.hash(topLeft[0], topLeft[1]);
-        //                 // col2 = Hash.hash(topRight[0], topRight[1]);
-        //                 // col3 = Hash.hash(bottomLeft[0], bottomLeft[1]);
-        //                 // col4 = Hash.hash(bottomRight[0], bottomRight[1]);
-
-        //                 // Calculate the dot products
-        //                 prod1 = Math.abs(DotProduct.dotProduct(topLeft, point));
-        //                 prod2 = Math.abs(DotProduct.dotProduct(topRight, point));
-        //                 prod3 = Math.abs(DotProduct.dotProduct(bottomLeft, point));
-        //                 prod4 = Math.abs(DotProduct.dotProduct(bottomRight, point));
-
-        //                 // System.out.println(prod1 + " " + prod2 + " " + prod3 + " " + prod4);
-                        
-        //                 // Perform bilinear interpolation
-        //                 lerp1 = Lerp.lerp(prod1, prod2, x);
-        //                 lerp2 = Lerp.lerp(prod3, prod4, x);
-        //                 lerp3 = Lerp.lerp(lerp1, lerp2, y);
-
-        //                 // Combine color components into a single RGB value
-        //                 red = (int)(lerp3);
-        //                 green = (int)(lerp3);
-        //                 blue = (int)(lerp3);
-        //                 rgb = (red << 16) | (green << 8) | blue;
-
-        //                 // Set the pixel color in the image
-        //                 image.setRGB(X, Y, rgb);
-        //             }
-        //         }
-        //     }
-        // }
+        for (int i = 0; i < perm.size(); i++){
+            perm.add(perm.get(i));
+        }
+        return  perm;
     }
 
+    // Gets the vectors of each corner of the grid.
+    public Vector2D GetVector(int val)
+    {
+        if (val % 4 == 0)
+        {
+            return new Vector2D(1.0, 1.0);
+        }
+        else if (val % 4 == 1)
+        {
+            return new Vector2D(-1.0, 1.0);
+        }
+        else if (val % 4 == 2)
+        {
+            return new Vector2D(1.0, -1.0);
+        }
+        else
+        {
+            return new Vector2D(-1.0, -1.0);
+        }
+    }
+
+    public double Lerp(double a, double b, double t)
+    {
+        // t = (3 - 2*t)*t*t;
+        t = ((6*t - 15)*t + 10)*t*t*t; //has to be betwen 0.0 and 1.0
+        return a + t * (b - a);
+    }
+
+    public double Noise2D(double x, double y){
+        //Values of which to get the values in the permutation table.
+        final int X = (int)Math.floor(x) & 255;
+        final int Y = (int)Math.floor(y) & 255;
+
+        //Values used to interpolate. the value used in the lerp function
+        final double xf = x - Math.floor(x); // tells you how far from the left edgge of the grid cell it is
+        final double yf = y - Math.floor(y);
+
+        final Vector2D topL = new Vector2D(xf, yf);
+        final Vector2D topR = new Vector2D(xf+1.0, yf);
+        final Vector2D botL = new Vector2D(xf, yf+1.0);
+        final Vector2D botR =  new Vector2D(xf+1.0, yf+1.0);
+
+        final int valTopL = permutation.get(permutation.get(X)+Y);
+        final int valTopR = permutation.get(permutation.get(X+1)+Y);
+        final int valBotL = permutation.get(permutation.get(X)+Y+1);
+        final int valBotR = permutation.get(permutation.get(X+1)+Y+1);
+
+        final double dotTopL = topL.dotProduct(GetVector(valTopL));
+        final double dotTopR = topR.dotProduct(GetVector(valTopR));
+        final double dotBotL = botL.dotProduct(GetVector(valBotL));
+        final double dotBotR = botR.dotProduct(GetVector(valBotR));
+        
+        return Lerp(Lerp(dotTopL, dotTopR, yf), Lerp(dotBotL, dotBotR, yf), xf);
+        
+    }
+
+    public PerlinImage(int seed){
+        BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        this.permutation = MakePermutation(seed);
+
+        for (int y= 0; y < 500; y++)
+        {
+            for (int x = 0; x < 500; x++)
+            {
+                double n = Noise2D(x*0.01, y*0.01);
+
+                int c = (int) Math.round(255*n);
+                image.setRGB(c,c,c);
+            }
+        }
+        this.image = image;
+    }
+    
     public BufferedImage getImage(){
         return image;
     }
