@@ -81,7 +81,7 @@ public class PerlinImage {
         final double dotBotL = botL.dotProduct(GetVector(valBotL));
         final double dotBotR = botR.dotProduct(GetVector(valBotR));
         
-        return Lerp(Lerp(dotTopL, dotTopR, yf), Lerp(dotBotL, dotBotR, yf), xf);
+        return Lerp(Lerp(dotTopL, dotTopR, xf), Lerp(dotBotL, dotBotR, xf), yf);
         
     }
 
