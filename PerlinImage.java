@@ -107,7 +107,7 @@ public class PerlinImage {
         {
             for (int x = 0; x < 500; x++)
             {
-                double n = FractalBrownianMotion(x, y, 6);
+                double n = FractalBrownianMotion(x, y, 5);
 
                 n = (n + 1.0) * 0.5;
                 int c = (int) Math.round(255*n);
