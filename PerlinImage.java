@@ -84,6 +84,20 @@ public class PerlinImage {
         return Lerp(Lerp(dotTopL, dotTopR, xf), Lerp(dotBotL, dotBotR, xf), yf);
         
     }
+    public double FractalBrownianMotion(int x, int y, int numOctaves){
+        double result = 0.0;
+        double amplitude = 1.0;
+        double freq = 0.005;
+
+        for (int octave = 0; octave < numOctaves; octave++){
+            final double n = amplitude * Noise2D(x * freq, y*freq);
+            result += n;
+
+            amplitude *= 0.5;
+            freq *= 2.0;
+        }
+        return result;
+    }
 
     public PerlinImage(int seed){
         BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
@@ -93,7 +107,7 @@ public class PerlinImage {
         {
             for (int x = 0; x < 500; x++)
             {
-                double n = Noise2D(x*0.01, y*0.01);
+                double n = FractalBrownianMotion(x, y, 7);
 
                 n = (n + 1.0) * 0.5;
                 int c = (int) Math.round(255*n);
@@ -101,10 +115,20 @@ public class PerlinImage {
                 c = Math.min(255, Math.max(0,c));
 
                 int rgb;
-                if (c > 120){
-                    rgb = (0 << 16) | (244 << 8) | 20;
+                if (c > 240){ //snow
+                    rgb = (225 << 16) | (225 << 8) | 225;
+                }else if (c > 220){ //Mountains
+                    rgb = (170 << 16) | (170 << 8) | 170;
+                } else if(c > 170){ //Dark Land
+                    rgb = (26 << 16) | (99 << 8) | 26;
+                } else if(c > 120) { //Light Land
+                    rgb = (21 << 16) | (153 << 8) | 21;
+                } else if (c > 105){ //Beach
+                    rgb = (194 << 16) | (177 << 8) | 48;
+                }else if (c > 60){ //close Ocean
+                    rgb = (20 << 16) | (40 << 8) | 230;
                 } else {
-                    rgb = (0 << 16) | (0 << 8) | 240;
+                    rgb = (0 << 16) | (0 << 8) | 160;
                 }
                 image.setRGB(x, y, rgb);
                 
