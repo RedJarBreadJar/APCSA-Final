@@ -124,7 +124,7 @@ public class PerlinImage {
                 } else if(c > 120) { //Light Land
                     rgb = (21 << 16) | (153 << 8) | 21;
                 } else if (c > 105){ //Beach
-                    rgb = (184 << 16) | (167 << 8) | 38;
+                    rgb = (184 << 16) | (167 << 8) | 8;
                 }else if (c > 60){ //close Ocean
                     rgb = (20 << 16) | (40 << 8) | 230;
                 } else {
