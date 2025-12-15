@@ -2,17 +2,19 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.lang.Math;
 
 public class PerlinImage {
     //code for perlin noise function goes in here
     private BufferedImage image;
     private static ArrayList<Integer> permutation;
 
+    final private int imgWidth = 1000;
+    final private int imgHeight = 700;
+
     //Makes an ArrayList
     public ArrayList<Integer> MakePermutation(int seed){
         
-        ArrayList<Integer>  perm = new ArrayList<Integer>();
+        ArrayList<Integer>  perm = new ArrayList<>();
         for (int i = 0; i < 256; i++) {
              perm.add(i);
         } //initialize
@@ -87,7 +89,7 @@ public class PerlinImage {
     public double FractalBrownianMotion(int x, int y, int numOctaves){
         double result = 0.0;
         double amplitude = 1.0;
-        double freq = 0.005;
+        double freq = 0.007;
 
         for (int octave = 0; octave < numOctaves; octave++){
             final double n = amplitude * Noise2D(x * freq, y*freq);
@@ -100,12 +102,12 @@ public class PerlinImage {
     }
 
     public PerlinImage(int seed){
-        BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB);
         this.permutation = MakePermutation(seed);
 
-        for (int y= 0; y < 500; y++)
+        for (int y= 0; y < imgHeight; y++)
         {
-            for (int x = 0; x < 500; x++)
+            for (int x = 0; x < imgWidth; x++)
             {
                 double n = FractalBrownianMotion(x, y, 6);
 
@@ -124,7 +126,7 @@ public class PerlinImage {
                 } else if(c > 120) { //Light Land
                     rgb = (21 << 16) | (153 << 8) | 21;
                 } else if (c > 105){ //Beach
-                    rgb = (184 << 16) | (167 << 8) | 8;
+                    rgb = (214 << 16) | (209 << 8) | 114;
                 }else if (c > 60){ //close Ocean
                     rgb = (20 << 16) | (40 << 8) | 230;
                 } else {
