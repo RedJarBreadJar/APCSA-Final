@@ -107,7 +107,7 @@ public class PerlinImage {
         {
             for (int x = 0; x < 500; x++)
             {
-                double n = FractalBrownianMotion(x, y, 5);
+                double n = FractalBrownianMotion(x, y, 6);
 
                 n = (n + 1.0) * 0.5;
                 int c = (int) Math.round(255*n);
@@ -118,13 +118,13 @@ public class PerlinImage {
                 if (c > 240){ //snow
                     rgb = (225 << 16) | (225 << 8) | 225;
                 }else if (c > 220){ //Mountains
-                    rgb = (170 << 16) | (170 << 8) | 170;
+                    rgb = (130 << 16) | (130<< 8) | 130;
                 } else if(c > 170){ //Dark Land
                     rgb = (26 << 16) | (99 << 8) | 26;
                 } else if(c > 120) { //Light Land
                     rgb = (21 << 16) | (153 << 8) | 21;
                 } else if (c > 105){ //Beach
-                    rgb = (194 << 16) | (177 << 8) | 48;
+                    rgb = (184 << 16) | (167 << 8) | 38;
                 }else if (c > 60){ //close Ocean
                     rgb = (20 << 16) | (40 << 8) | 230;
                 } else {
